@@ -32,9 +32,15 @@ app.get('/todos', function (req, res) {
 
 	if (query.hasOwnProperty('completed') && query.completed === 'true') {
 		filteredTodos = _.where(filteredTodos, {completed: true});
-	} else if (query.hasOwnProperty('completed') && query.completed === 'true') {
+	} else if (query.hasOwnProperty('completed') && query.completed === 'false') {
 		filteredTodos = _.where(filteredTodos, {completed: false});
-	};
+	}
+
+	if (query.hasOwnProperty('description') && query.description.trim().length > 0) {
+		filteredTodos = _.filter(filteredTodos, function(todo) { 
+			return todo.description.toLowerCase().indexOf(query.description.toLowerCase().trim()) > -1
+		});
+	}
 
 	res.json(filteredTodos);
 });
